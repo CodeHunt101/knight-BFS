@@ -3,37 +3,20 @@ import { useState, useEffect } from "react"
 import { ChessBoard } from "./ChessBoard"
 import { generateCoordinates } from "../helpers"
 import { generateRandomCoordinate } from "../helpers"
+import { generateNextPossiblePositions } from "../helpers"
+import { findNextBestPosition } from "../helpers"
 
 export const GameControl = () => {
-  const [newGame, setNewGame] = useState({
+  const [gameStatus, setGameStatus] = useState({
     knightPosition: "",
     targetPosition: "",
+    prevMoves: [],
   })
 
   const startNewGame = () => {
     // Assigns the initial position and target to the state
-    setNewGame(defineInitialPositionAndTarget())
+    setGameStatus(defineInitialPositionAndTarget())
   }
-
-  const handleNewPosition = (event, coordinate) => {
-    ;["new-possible-position", "box-target"].includes(event.target.className) &&
-      setNewGame({ ...newGame, knightPosition: coordinate })
-  }
-
-  useEffect(() => {
-    // Back to initial state when the knight reaches the target
-    if (
-      JSON.stringify(newGame.knightPosition) ===
-        JSON.stringify(newGame.targetPosition) &&
-      newGame.knightPosition !== ""
-    ) {
-      alert("Contratulations! You reached the final target")
-      setNewGame({
-        knightPosition: "",
-        targetPosition: "",
-      })
-    }
-  }, [newGame.knightPosition, newGame.targetPosition])
 
   const defineInitialPositionAndTarget = () => {
     // Defines the initial position of the Knight and the target
@@ -48,21 +31,63 @@ export const GameControl = () => {
         generateRandomCoordinate(),
       ]
     }
-    return { knightPosition, targetPosition }
+    return { knightPosition, targetPosition, prevMoves: [knightPosition] }
   }
+
+  const handleNewPosition = (event, coordinate) => {
+    ;["new-possible-position", "box-target"].includes(event.target.className) &&
+      setGameStatus({
+        ...gameStatus,
+        knightPosition: coordinate,
+        prevMoves: [...gameStatus.prevMoves, coordinate],
+      })
+  }
+
+  const helpUser = () => {
+    // Makes a move for the user by finding the closest position from the target
+    const nextPossiblePositions = generateNextPossiblePositions(
+      gameStatus.knightPosition
+    )
+    const nextBestPosition = findNextBestPosition(
+      nextPossiblePositions,
+      gameStatus.targetPosition,
+      gameStatus.prevMoves
+    )
+    setGameStatus({
+      ...gameStatus,
+      knightPosition: nextBestPosition,
+      prevMoves: [...gameStatus.prevMoves, nextBestPosition],
+    })
+  }
+
+  useEffect(() => {
+    // Back to initial state when the knight reaches the target
+    if (
+      JSON.stringify(gameStatus.knightPosition) ===
+        JSON.stringify(gameStatus.targetPosition) &&
+      gameStatus.knightPosition !== ""
+    ) {
+      setGameStatus({
+        knightPosition: "",
+        targetPosition: "",
+        prevMoves: [],
+      })
+      alert("Contratulations! You reached the final target")
+    }
+  }, [gameStatus.knightPosition, gameStatus.targetPosition])
 
   return (
     <>
       <ChessBoard
+        gameStatus={gameStatus}
         generateCoordinates={generateCoordinates}
-        newGame={newGame}
         handleNewPosition={handleNewPosition}
       />
       <div id="control">
         <button onClick={startNewGame} className="control-button" id="new-game">
           Start new game
         </button>
-        <button className="control-button" id="help">
+        <button onClick={helpUser} className="control-button" id="help">
           Help
         </button>
       </div>

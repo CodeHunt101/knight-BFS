@@ -1,18 +1,28 @@
 import React from "react"
-import { newPossiblePositions } from "../helpers"
+import { generateNextPossiblePositions } from "../helpers"
 
-export const Box = ({ coordinate, boxColour, newGame, handleNewPosition }) => {
+export const Box = ({
+  coordinate,
+  boxColour,
+  gameStatus,
+  handleNewPosition,
+}) => {
   const defineClassName = () => {
-    if (JSON.stringify(newGame.knightPosition) === JSON.stringify(coordinate)) {
+    // This function defines the boxes that must have the knight, target and next possible moves.
+    if (
+      JSON.stringify(gameStatus.knightPosition) === JSON.stringify(coordinate)
+    ) {
       return "box-knight"
     } else if (
-      JSON.stringify(newGame.targetPosition) === JSON.stringify(coordinate)
+      JSON.stringify(gameStatus.targetPosition) === JSON.stringify(coordinate)
     ) {
       return "box-target"
     } else if (
-      newPossiblePositions(newGame.knightPosition).includes(
-        `${coordinate[0]}-${coordinate[1]}`
-      )
+      generateNextPossiblePositions(gameStatus.knightPosition)
+        .map(
+          (possiblePosition) => `${possiblePosition[0]}-${possiblePosition[1]}`
+        )
+        .includes(`${coordinate[0]}-${coordinate[1]}`)
     ) {
       return "new-possible-position"
     } else return "box"

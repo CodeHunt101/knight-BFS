@@ -19,7 +19,7 @@ export const generateRandomCoordinate = () =>
     Math.floor(Math.random() * generateCoordinates().length)
   ]
 
-export const newPossiblePositions = (currentPosition) => {
+export const generateNextPossiblePositions = (currentPosition) => {
   // Return new possible positions of a Knight in a chess game
   const [maxXCoordinate, maxYCoordinate, minXCoordinate, minYCoordinate] = [
     8, 8, 1, 1,
@@ -47,14 +47,59 @@ export const newPossiblePositions = (currentPosition) => {
   ]
 
   // Filter to show only valid positions
-  return possiblePositions
-    .filter((possiblePosition) => {
+  return possiblePositions.filter((possiblePosition) => {
+    return (
+      possiblePosition[0] <= maxXCoordinate &&
+      possiblePosition[0] >= minXCoordinate &&
+      possiblePosition[1] <= maxYCoordinate &&
+      possiblePosition[1] >= minYCoordinate
+    )
+  })
+}
+
+const findDistanceBetweenTwoPoints = (pointA, pointB) => {
+  return Math.sqrt((pointA[0] - pointB[0]) ** 2 + (pointA[1] - pointB[1]) ** 2)
+}
+
+export const findNextBestPosition = (
+  nextPossiblePositions,
+  targetPosition,
+  prevMoves
+) => {
+  /* 
+    If the next possible position is the target position, the best position will be the target one. 
+    Otherwise it'll look for new possible positions where the knight hasn't been on and go to the 
+    one that is closest to the target until it finds it.
+  */
+  if (
+    nextPossiblePositions.find(
+      (newPossiblePosition) =>
+        JSON.stringify(newPossiblePosition) === JSON.stringify(targetPosition)
+    )
+  ) {
+    return targetPosition
+  } else {
+    const newNextPossiblePositions = nextPossiblePositions.filter(
+      (newPossiblePosition) => {
+        return !prevMoves.find(
+          (prevMove) =>
+            JSON.stringify(prevMove) === JSON.stringify(newPossiblePosition)
+        )
+      }
+    )
+
+    const distancesFromTarget = newNextPossiblePositions.map(
+      (newPossiblePosition) =>
+        findDistanceBetweenTwoPoints(newPossiblePosition, targetPosition)
+    )
+
+    const bestDistanceFromTarget = Math.min(...distancesFromTarget)
+
+    return newNextPossiblePositions.find((newPossiblePosition) => {
       return (
-        possiblePosition[0] <= maxXCoordinate &&
-        possiblePosition[0] >= minXCoordinate &&
-        possiblePosition[1] <= maxYCoordinate &&
-        possiblePosition[1] >= minYCoordinate
+        findDistanceBetweenTwoPoints(newPossiblePosition, targetPosition) ===
+        bestDistanceFromTarget
       )
     })
-    .map((possiblePosition) => `${possiblePosition[0]}-${possiblePosition[1]}`)
+  }
 }

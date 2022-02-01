@@ -3,22 +3,23 @@ import { Box } from "./Box"
 
 export const ChessBoard = ({
   generateCoordinates,
-  newGame,
+  gameStatus,
   handleNewPosition,
 }) => {
   const renderBoxes = () =>
-    // Render all the boxes of the chess board and defines the colours.
+    // Renders all the boxes of the chess board and defines the colours.
     generateCoordinates().map((coordinate) => (
       <Box
         key={coordinate}
         coordinate={coordinate}
-        newGame={newGame}
+        gameStatus={gameStatus}
         handleNewPosition={handleNewPosition}
         boxColour={defineBoxColour(coordinate)}
       />
     ))
 
   const defineBoxColour = (coordinate) => {
+    // If the both y and x coordinates are odd or both are even, the box will be black, otherwise white
     if (
       (coordinate[1] % 2 !== 0 && coordinate[0] % 2 !== 0) ||
       (coordinate[1] % 2 === 0 && coordinate[0] % 2 === 0)
