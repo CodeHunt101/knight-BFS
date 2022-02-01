@@ -45,19 +45,23 @@ export const GameControl = () => {
 
   const helpUser = () => {
     // Makes a move for the user by finding the closest position from the target
-    const nextPossiblePositions = generateNextPossiblePositions(
-      gameStatus.knightPosition
-    )
-    const nextBestPosition = findNextBestPosition(
-      nextPossiblePositions,
-      gameStatus.targetPosition,
-      gameStatus.prevMoves
-    )
-    setGameStatus({
-      ...gameStatus,
-      knightPosition: nextBestPosition,
-      prevMoves: [...gameStatus.prevMoves, nextBestPosition],
-    })
+    if (gameStatus.knightPosition !== "") {
+      const nextPossiblePositions = generateNextPossiblePositions(
+        gameStatus.knightPosition
+      )
+      const nextBestPosition = findNextBestPosition(
+        nextPossiblePositions,
+        gameStatus.targetPosition,
+        gameStatus.prevMoves
+      )
+      setGameStatus({
+        ...gameStatus,
+        knightPosition: nextBestPosition,
+        prevMoves: [...gameStatus.prevMoves, nextBestPosition],
+      })
+    } else {
+      alert('Please start a new game first')
+    }
   }
 
   useEffect(() => {
