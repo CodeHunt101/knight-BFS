@@ -55,6 +55,15 @@ code {
   background-position:center;
 }
 
+div#chessboard div.new-possible-position {
+  width: 12.5%;
+  height: 12.5%;
+  background-image: url(../public/next_move.png);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
 #control {
   margin-top: 1%;
 }
