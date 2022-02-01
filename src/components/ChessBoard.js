@@ -1,39 +1,16 @@
 import React from 'react'
 import { Box } from './Box'
 
-const generateCoordinates = () => {
-  const xCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-  const yCoordinates = [1,2,3,4,5,6,7,8]
-
-  const allCoordinates = []
-  
-  xCoordinates.forEach(x => {
-    yCoordinates.forEach( y => {
-      allCoordinates.push([x,y])
-    })
-  })
-  return allCoordinates
-}
-
-const generateRandomCoordinate = () => generateCoordinates()[Math.floor(Math.random()*generateCoordinates().length)]
-
-const defineInitialPositionAndTarget = () =>{
-  let [knightPosition, targetPosition] = [generateRandomCoordinate(), generateRandomCoordinate()]
-  while (JSON.stringify(knightPosition) === JSON.stringify(targetPosition)) {
-    [knightPosition, targetPosition] = [generateRandomCoordinate(), generateRandomCoordinate()]
-  }
-  return {knightPosition, targetPosition}
-}
-
-export const ChessBoard = () => {
+export const ChessBoard = ({generateCoordinates, newGame}) => {
   
   const renderBoxes = () => (
+    // Render all the boxes of the chess board and defines the colours.
     generateCoordinates().map(coordinate => {
       if ((coordinate[1] % 2 !==0 && ['a', 'c', 'e', 'g'].includes(coordinate[0])) ||
       (coordinate[1] % 2 === 0 && ['b', 'd', 'f', 'h'].includes(coordinate[0]))) {
-        return <Box key={coordinate} coordinate={`${coordinate[0]}-${coordinate[1]}`} boxColour="black" />
+        return <Box key={coordinate} coordinate={`${coordinate[0]}-${coordinate[1]}`} newGame={newGame} boxColour="black" />
       }
-      else return <Box key={coordinate} coordinate={`${coordinate[0]}-${coordinate[1]}`} boxColour="white" />
+      else return <Box key={coordinate} coordinate={`${coordinate[0]}-${coordinate[1]}`} newGame={newGame} boxColour="white" />
     } 
   ))
 
