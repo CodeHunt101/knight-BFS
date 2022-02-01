@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { ChessBoard } from './components/ChessBoard';
 import './App.css';
 
 function App() {
+  const [newGame, setNewGame] = useState({
+    knightPosition: "",
+    targetPosition: ""
+  })
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <main id="main-container">
+        <ChessBoard />
+        <div id="control">
+          <button className="control-button" id="new-game">Start new game</button>
+          <button className="control-button" id="help">Help</button>
+        </div>
+      </main>
     </div>
   );
 }

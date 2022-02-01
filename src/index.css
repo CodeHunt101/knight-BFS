@@ -5,9 +5,61 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+#root {
+  height: 100%
+}
+
+#main-container {
+  height: 100%
+}
+
+#chessboard {
+  display: flex;
+  flex-wrap: wrap;
+  width: 45vw;
+  height: 45vw;
+  margin-left:auto;
+  margin-right: auto;
+  margin-top:3%;
+  border-style: solid;
+  /* border-width: 0.1px; */
+}
+
+.box {
+  width: 12.5%;
+  height: 12.5%;
+}
+
+.box-knight {
+  width: 12.5%;
+  height: 12.5%;
+  background-image: url(../public/knight.png);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
+.box-target {
+  width: 12.5%;
+  height: 12.5%;
+  background-image: url(../public/target.png);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
+#control {
+  margin-top: 1%;
+}
+
+.control-button {
+  margin: 2%;
+  font-size: 20px;
 }
