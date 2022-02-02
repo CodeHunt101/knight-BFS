@@ -32,12 +32,12 @@ code {
   /* border-width: 0.1px; */
 }
 
-.box {
+.tile {
   width: 12.5%;
   height: 12.5%;
 }
 
-.box-knight {
+.tile-knight {
   width: 12.5%;
   height: 12.5%;
   background-image: url(../public/knight.png);
@@ -46,7 +46,7 @@ code {
   background-position:center;
 }
 
-.box-target {
+.tile-target {
   width: 12.5%;
   height: 12.5%;
   background-image: url(../public/target.png);
@@ -60,6 +60,15 @@ div#chessboard div.new-possible-position {
   height: 12.5%;
   background-image: url(../public/next_move.png);
   background-size: 70%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
+.tile-target-possible-position {
+  width: 12.5%;
+  height: 12.5%;
+  background-image: url(../public/next_move.png), url(../public/target.png) ;
+  background-size: 60%, 70%;
   background-repeat: no-repeat;
   background-position:center;
 }

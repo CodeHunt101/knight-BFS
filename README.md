@@ -25,7 +25,7 @@ App.js
           |
           |-->ChessBoard.js
                   |
-                  |-->Box.js
+                  |-->Tile.js
 ```
 
 *index.css* contains the stylings and layout

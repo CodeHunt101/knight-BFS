@@ -88,12 +88,23 @@ export const findNextBestPosition = (
       }
     )
 
-    const distancesFromTarget = newNextPossiblePositions.map(
-      (newPossiblePosition) =>
-        findDistanceBetweenTwoPoints(newPossiblePosition, targetPosition)
-    )
+    const getDistancesFromTarget = () => {
+      const nextPossibleDistances = newNextPossiblePositions.map(
+        (newPossiblePosition) =>
+          findDistanceBetweenTwoPoints(newPossiblePosition, targetPosition)
+      )
 
-    const bestDistanceFromTarget = Math.min(...distancesFromTarget)
+      const nextPossibleDistancesNotAdjacentToTarget =
+        nextPossibleDistances.filter(
+          (distanceFromTarget) => distanceFromTarget > Math.sqrt(2)
+        )
+
+      if (nextPossibleDistancesNotAdjacentToTarget.length === 0) {
+        return nextPossibleDistances
+      } else return nextPossibleDistancesNotAdjacentToTarget
+    }
+
+    const bestDistanceFromTarget = Math.min(...getDistancesFromTarget())
 
     return newNextPossiblePositions.find((newPossiblePosition) => {
       return (

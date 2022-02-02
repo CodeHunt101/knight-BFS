@@ -35,11 +35,11 @@ export const GameControl = () => {
   }
 
   const handleNewPosition = (event, coordinate) => {
-    ;["new-possible-position", "box-target"].includes(event.target.className) &&
+    ;["new-possible-position", "tile-target-possible-position"].includes(event.target.className) &&
       setGameStatus({
         ...gameStatus,
         knightPosition: coordinate,
-        prevMoves: [...gameStatus.prevMoves, coordinate],
+        prevMoves: [],
       })
   }
 
