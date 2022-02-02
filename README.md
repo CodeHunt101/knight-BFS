@@ -34,6 +34,7 @@ There is a file called *helpers.js*, which contains some exported functions to s
 
 ## Improvement Opportunities
 
+- Add a Rails backend for more features like data persistance, user login, and the logic itself.
 - Add more stylings and improve responsiveness.
 - The logic to get to the ending location by clicking on the *Help* function could be more optimal. E.g. Minimising the steps.
 - Further code refactoring.
