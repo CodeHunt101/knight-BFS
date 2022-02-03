@@ -1,43 +1,24 @@
-# Knight Chess Game coding challenge
+# README
 
-## Instructions
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-1. Clone this repository.
+Things you may want to cover:
 
-2. To install all the dependencies, please run:
-```
-npm install
-```
+* Ruby version
 
-3. Run the following to start the server:
-```
-npm start
-```
+* System dependencies
 
-## Structure
+* Configuration
 
-The components structure is the following:
+* Database creation
 
-```
-App.js
-  |
-  |-->GameControl.js
-          |
-          |-->ChessBoard.js
-                  |
-                  |-->Tile.js
-```
+* Database initialization
 
-*index.css* contains the stylings and layout
+* How to run the test suite
 
-There is a file called *helpers.js*, which contains some exported functions to some components.
+* Services (job queues, cache servers, search engines, etc.)
 
-## Improvement Opportunities
+* Deployment instructions
 
-- Add a Rails backend for more features like data persistance, user login, and the logic itself.
-- Add more stylings and improve responsiveness.
-- The logic to get to the ending location by clicking on the *Help* function could be more optimal. E.g. Minimising the steps.
-- Further code refactoring.
-- Add tests to minimise bug occurrences.
-
-Thank you for your time!
+* ...
