@@ -1,5 +1,7 @@
 # Knight Chess Game coding challenge
 
+Note: Added backend server. The deployed version doesn't have a backend server, so please clone this repository to experience the last changes.
+
 ## Instructions
 
 1. Clone this repository.
@@ -26,8 +28,12 @@ rails server
 npm start --prefix client
 ```
 
-## Structure
+## Structure (MVC)
 
+### Models & Controllers
+The *Rails* server handles the entire logic of the *Help* button and the *Start New Game* button from the **Game** model (*Game.rb*). The information is sent to the Client from  **Api::V1::GamesController** (*games_controller.rb*) as JSON. The manual play mode is handled from the client.
+
+### Views
 The components structure is the following:
 
 ```
@@ -42,14 +48,14 @@ App.js
 
 *index.css* contains the stylings and layout
 
-There is a file called *helpers.js*, which contains some exported functions to some components.
+## Recent major implementations
+- Help button calls a *Breadth First Search* algorithm to find the shortest path to the final target location.
 
 ## Improvement Opportunities
-
-- Add a Rails backend for more features like data persistance, user login, and the logic itself.
+- Add a Rails backend for more features such as when the user manually plays the knight, data persistance, and user login.
 - Add more stylings and improve responsiveness.
-- The logic to get to the ending location by clicking on the *Help* function could be more optimal. E.g. Minimising the steps.
 - Further code refactoring.
 - Add tests to minimise bug occurrences.
+- Deploy on Heroku or another cloud platform that supports Rails. 
 
 Thank you for your time!
