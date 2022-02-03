@@ -5,4 +5,11 @@ class Api::V1::GamesController < ApplicationController
       resp: initial_position_and_target
     }
   end
+
+  def shortest_path
+    shortest_path = Game.find_shortest_path(params[:game][:initial_position], params[:game][:target_position])
+    render json: {
+      resp: shortest_path
+    }
+  end
 end

@@ -1,8 +1,8 @@
 import React from "react"
 import { Tile } from "./Tile"
+import { generateCoordinates } from "../helpers"
 
 export const ChessBoard = ({
-  generateCoordinates,
   gameStatus,
   handleNewPosition,
 }) => {
@@ -30,3 +30,4 @@ export const ChessBoard = ({
 
   return <div id="chessboard">{renderTiles()}</div>
 }
+

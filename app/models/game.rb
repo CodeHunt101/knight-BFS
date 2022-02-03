@@ -46,46 +46,43 @@ class Game < ApplicationRecord
     end
   end
 
-  def self.find_distance_between_two_positions(point_a, point_b)
-    Math.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
-  end
-  
-  def self.get_distances_from_target(new_next_possible_positions, target_position)
-    next_possible_distances = new_next_possible_positions.map do |new_possible_position|
-      self.find_distance_between_two_positions(new_possible_position, target_position)
-    end
-  
-    next_possible_distances_not_adjacent_to_target = next_possible_distances.filter do |distance_from_target|
-      distance_from_target > Math.sqrt(2)
-    end
-  
-    if next_possible_distances_not_adjacent_to_target.size == 0
-      next_possible_distances
-    else
-      next_possible_distances_not_adjacent_to_target
-    end
-  end
+  def self.find_shortest_path(initial_position, target_position)
+    # Implemented Breath First Search Algorithm
+    
+    queue = []
+    visited = []
+    queue << initial_position
+    visited << initial_position
+    edge_to = {}
 
-  def self.find_next_best_position(next_possible_positions, target_position, prev_positions)
-=begin
-    If the next possible position is the target position, the best position will be the target one. 
-    Otherwise it'll look for new possible positions where the knight hasn't been on and go to the 
-    one that is closest to the target until it finds it.
-=end
-    if next_possible_positions.find {|position| position == target_position}
-      target_position
-    else
-      new_next_possible_positions = next_possible_positions.filter do |next_possible_position|
-        prev_positions.all?{|prev_position| prev_position != next_possible_position}
+    #While queue is not empty, current_position will take the first position of the knight.
+    #Then it will iterate the next possible positions, skipping those already visited, and
+    #adding each possible position to the queue and keeping track of each parent (prev position) through 
+    #the edge_to hash.
+
+    while queue.any?
+      current_position = queue.shift
+      self.generate_next_possible_positions(current_position).each do |next_possible_position|
+        next if visited.include?(next_possible_position)
+        queue << next_possible_position
+        visited << next_possible_position
+        edge_to[next_possible_position] = current_position
       end
-
-
-      best_distance_from_target = self.get_distances_from_target(new_next_possible_positions, target_position).min
-
-      new_next_possible_positions.find do |new_possible_position|
-        self.find_distance_between_two_positions(new_possible_position, target_position) == best_distance_from_target
-      end
+      
     end
+    
+    
+    # The shortest distance is calculated here. 
+    # The path will be adding all positions that comes from parents, starting from the target position until the initial position (parent of all).
+    
+    path = []
+
+    while target_position != initial_position
+      path.unshift(target_position)
+      target_position = edge_to[target_position]
+    end
+
+    path
   end
 
   def self.define_initial_position_and_target
@@ -104,6 +101,6 @@ class Game < ApplicationRecord
       target_position: target_position
     }
   end
-
+  
 end
 

@@ -1,54 +1,66 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { ChessBoard } from "./ChessBoard"
-import { generateCoordinates } from "../helpers"
-import { generateNextPossiblePositions } from "../helpers"
-import { findNextBestPosition } from "../helpers"
 
 export const GameControl = () => {
   const [gameStatus, setGameStatus] = useState({
     knightPosition: "",
     targetPosition: "",
-    prevMoves: [],
+    disableHelpButton: false,
   })
 
-  const startNewGame = () => (
-    fetch('/api/v1/new_game')
-      .then(resp => resp.json())
-      .then(resp => setGameStatus({
-        knightPosition: resp.resp.knight_position,
-        targetPosition: resp.resp.target_psition,
-        prevMoves:[resp.resp.knight_position]
-      }))
-  )
+  const startNewGame = () =>
+    fetch("/api/v1/new_game")
+      .then((resp) => resp.json())
+      .then((resp) =>
+        setGameStatus({
+          ...gameStatus,
+          knightPosition: resp.resp.knight_position,
+          targetPosition: resp.resp.target_position,
+        })
+      )
 
   const handleNewPosition = (event, coordinate) => {
-    ;["new-possible-position", "tile-target-possible-position"].includes(event.target.className) &&
+    ;["new-possible-position", "tile-target-possible-position"].includes(
+      event.target.className
+    ) &&
       setGameStatus({
         ...gameStatus,
         knightPosition: coordinate,
-        prevMoves: [],
       })
   }
 
-  const helpUser = () => {
-    // Makes a move for the user by finding the closest position from the target
+  const helpUser = (e) => {
+    // Sends a POST request with initial location and target params to the backend, which handles and retrieves
+    // the shortest path. Each step is displayed every 1 second.
+
     if (gameStatus.knightPosition !== "") {
-      const nextPossiblePositions = generateNextPossiblePositions(
-        gameStatus.knightPosition
-      )
-      const nextBestPosition = findNextBestPosition(
-        nextPossiblePositions,
-        gameStatus.targetPosition,
-        gameStatus.prevMoves
-      )
-      setGameStatus({
-        ...gameStatus,
-        knightPosition: nextBestPosition,
-        prevMoves: [...gameStatus.prevMoves, nextBestPosition],
+      fetch("/api/v1/shortest_path", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          game: {
+            initial_position: gameStatus.knightPosition,
+            target_position: gameStatus.targetPosition,
+          },
+        }),
       })
+        .then((resp) => resp.json())
+        .then((resp) => {
+          for (let i = 0; i < resp.resp.length; i++) {
+            setTimeout(() => {
+              setGameStatus({
+                ...gameStatus,
+                knightPosition: resp.resp[i],
+                disableHelpButton: true,
+              })
+            }, 1000 * i)
+          }
+        })
     } else {
-      alert('Please start a new game first')
+      alert("Please start a new game first")
     }
   }
 
@@ -62,7 +74,7 @@ export const GameControl = () => {
       setGameStatus({
         knightPosition: "",
         targetPosition: "",
-        prevMoves: [],
+        disableHelpButton: false,
       })
       alert("Contratulations! You reached the final target")
     }
@@ -72,14 +84,18 @@ export const GameControl = () => {
     <>
       <ChessBoard
         gameStatus={gameStatus}
-        generateCoordinates={generateCoordinates}
         handleNewPosition={handleNewPosition}
       />
       <div id="control">
         <button onClick={startNewGame} className="control-button" id="new-game">
           Start new game
         </button>
-        <button onClick={helpUser} className="control-button" id="help">
+        <button
+          onClick={helpUser}
+          disabled={gameStatus.disableHelpButton}
+          className="control-button"
+          id="help"
+        >
           Help
         </button>
       </div>

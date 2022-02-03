@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       #Games
       get "/new_game", to: "games#new_game"
+      post "/shortest_path", to: "games#shortest_path"
     end
   end
 end
