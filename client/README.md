@@ -4,14 +4,26 @@
 
 1. Clone this repository.
 
-2. To install all the dependencies, please run:
+2. Please make sure you are using **Ruby 2.7.4**, otherwise go to *Gemfile* and change the ruby version to the one you currently have. Then please run:
+
 ```
-npm install
+bundle install
 ```
 
-3. Run the following to start the server:
+3. To install all the react dependencies, please run:
 ```
-npm start
+npm install --prefix client
+```
+
+4. To call the server run:
+
+```
+rails server
+```
+
+5. Run the following to start the game in the browser:
+```
+npm start --prefix client
 ```
 
 ## Structure
