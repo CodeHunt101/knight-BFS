@@ -2,7 +2,6 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { ChessBoard } from "./ChessBoard"
 import { generateCoordinates } from "../helpers"
-import { generateRandomCoordinate } from "../helpers"
 import { generateNextPossiblePositions } from "../helpers"
 import { findNextBestPosition } from "../helpers"
 
@@ -13,26 +12,15 @@ export const GameControl = () => {
     prevMoves: [],
   })
 
-  const startNewGame = () => {
-    // Assigns the initial position and target to the state
-    setGameStatus(defineInitialPositionAndTarget())
-  }
-
-  const defineInitialPositionAndTarget = () => {
-    // Defines the initial position of the Knight and the target
-    let [knightPosition, targetPosition] = [
-      generateRandomCoordinate(),
-      generateRandomCoordinate(),
-    ]
-    //Makes sure the initial position and target are not the same
-    while (JSON.stringify(knightPosition) === JSON.stringify(targetPosition)) {
-      ;[knightPosition, targetPosition] = [
-        generateRandomCoordinate(),
-        generateRandomCoordinate(),
-      ]
-    }
-    return { knightPosition, targetPosition, prevMoves: [knightPosition] }
-  }
+  const startNewGame = () => (
+    fetch('/api/v1/new_game')
+      .then(resp => resp.json())
+      .then(resp => setGameStatus({
+        knightPosition: resp.resp.knight_position,
+        targetPosition: resp.resp.target_psition,
+        prevMoves:[resp.resp.knight_position]
+      }))
+  )
 
   const handleNewPosition = (event, coordinate) => {
     ;["new-possible-position", "tile-target-possible-position"].includes(event.target.className) &&
