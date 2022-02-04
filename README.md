@@ -1,7 +1,5 @@
 # Knight Chess Game coding challenge
 
-Note: Added backend server. The deployed version doesn't have a backend server, so please clone this repository to experience the last changes.
-
 ## Instructions
 
 1. Clone this repository.
@@ -56,6 +54,5 @@ App.js
 - Add more stylings and improve responsiveness.
 - Further code refactoring.
 - Add tests to minimise bug occurrences.
-- Deploy on Heroku or another cloud platform that supports Rails. 
 
 Thank you for your time!
