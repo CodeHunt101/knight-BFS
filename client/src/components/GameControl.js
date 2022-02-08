@@ -15,8 +15,8 @@ export const GameControl = () => {
       .then((resp) =>
         setGameStatus({
           ...gameStatus,
-          knightPosition: resp.resp.knight_position,
-          targetPosition: resp.resp.target_position,
+          knightPosition: resp.initial_and_target_positions.knight_position,
+          targetPosition: resp.initial_and_target_positions.target_position,
         })
       )
 
@@ -49,11 +49,11 @@ export const GameControl = () => {
       })
         .then((resp) => resp.json())
         .then((resp) => {
-          for (let i = 0; i < resp.resp.length; i++) {
+          for (let i = 0; i < resp.shortest_path.length; i++) {
             setTimeout(() => {
               setGameStatus({
                 ...gameStatus,
-                knightPosition: resp.resp[i],
+                knightPosition: resp.shortest_path[i],
                 disableHelpButton: true,
               })
             }, 1000 * i)
