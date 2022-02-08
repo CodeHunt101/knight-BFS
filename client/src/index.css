@@ -5,31 +5,50 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-#root {
-  height: 100%
+
+@media screen and (max-width: 400px) {
+  #chessboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80vw;
+    height: 80vw;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:3%;
+    border-style: solid;
+  }
 }
 
-#main-container {
-  height: 100%
+@media (min-width:401px) and (max-width: 1100px) {
+  #chessboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 60vw;
+    height: 60vw;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:3%;
+    border-style: solid;
+  }
 }
 
-#chessboard {
-  display: flex;
-  flex-wrap: wrap;
-  width: 45vw;
-  height: 45vw;
-  margin-left:auto;
-  margin-right: auto;
-  margin-top:3%;
-  border-style: solid;
-  /* border-width: 0.1px; */
+@media (min-width:1101px) {
+  #chessboard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 40vw;
+    height: 40vw;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:3%;
+    border-style: solid;
+  }
 }
 
 .tile {
