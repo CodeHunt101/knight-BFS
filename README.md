@@ -29,7 +29,7 @@ npm start --prefix client
 ## Structure (MVC)
 
 ### Models & Controllers
-The *Rails* server handles the entire logic of the *Help* button and the *Start New Game* button from the **Game** model (*Game.rb*). The information is sent to the Client from  **Api::V1::GamesController** (*games_controller.rb*) as JSON. The manual play mode is handled from the client.
+The *Rails* server handles the entire logic of game from the **Game** model (*Game.rb*). The information is sent to the Client from  **Api::V1::GamesController** (*games_controller.rb*) as JSON. The manual play mode is handled from the client.
 
 ### Views
 The components structure is the following:
@@ -50,7 +50,7 @@ App.js
 - Help button calls a *Breadth First Search* algorithm to find the shortest path to the final target location.
 
 ## Improvement Opportunities
-- Add a Rails backend for more features such as when the user manually plays the knight, data persistance, and user login.
+- Add a Rails backend for more features such as, data persistance, and user login.
 - Add more stylings and improve responsiveness.
 - Further code refactoring.
 - Add tests to minimise bug occurrences.

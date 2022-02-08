@@ -1,5 +1,4 @@
 import React from "react"
-import { generateNextPossiblePositions } from "../helpers"
 
 export const Tile = ({
   coordinate,
@@ -13,13 +12,13 @@ export const Tile = ({
   const isTargetPosition = () =>
     JSON.stringify(gameStatus.targetPosition) === JSON.stringify(coordinate)
   
-  const isNextPossiblePosition = () => {
-    return generateNextPossiblePositions(gameStatus.knightPosition)
+  const isNextPossiblePosition = () => (
+     gameStatus.nextPossiblePositions !== "" && gameStatus.nextPossiblePositions
       .map(
         (possiblePosition) => `${possiblePosition[0]}-${possiblePosition[1]}`
       )
       .includes(`${coordinate[0]}-${coordinate[1]}`)
-  }
+  )
 
   const defineClassName = () => {
     // This function defines the tiles that must have the knight, target and next possible moves.

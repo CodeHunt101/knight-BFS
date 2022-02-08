@@ -5,32 +5,49 @@ import { ChessBoard } from "./ChessBoard"
 export const GameControl = () => {
   const [gameStatus, setGameStatus] = useState({
     knightPosition: "",
+    nextPossiblePositions: "",
     targetPosition: "",
     disableHelpButton: false,
   })
 
-  const startNewGame = () =>
+  const startNewGame = () => {
     fetch("/api/v1/new_game")
       .then((resp) => resp.json())
       .then((resp) =>
         setGameStatus({
           ...gameStatus,
           knightPosition: resp.initial_and_target_positions.knight_position,
+          nextPossiblePositions: resp.next_possible_positions,
           targetPosition: resp.initial_and_target_positions.target_position,
         })
       )
-
+  }
   const handleNewPosition = (event, coordinate) => {
     ;["new-possible-position", "tile-target-possible-position"].includes(
       event.target.className
     ) &&
-      setGameStatus({
-        ...gameStatus,
-        knightPosition: coordinate,
+      fetch("/api/v1/next_possible_positions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          game: {
+            current_position: coordinate,
+          },
+        }),
       })
+        .then((resp) => resp.json())
+        .then((resp) => {
+          setGameStatus({
+            ...gameStatus,
+            knightPosition: coordinate,
+            nextPossiblePositions: resp.next_possible_positions,
+          })
+        })
   }
 
-  const helpUser = (e) => {
+  const helpUser = () => {
     // Sends a POST request with initial location and target params to the backend, which handles and retrieves
     // the shortest path. Each step is displayed every 1 second.
 
@@ -54,6 +71,7 @@ export const GameControl = () => {
               setGameStatus({
                 ...gameStatus,
                 knightPosition: resp.shortest_path[i],
+                nextPossiblePositions: "",
                 disableHelpButton: true,
               })
             }, 1000 * i)
@@ -74,6 +92,7 @@ export const GameControl = () => {
       setGameStatus({
         knightPosition: "",
         targetPosition: "",
+        nextPossiblePositions: "",
         disableHelpButton: false,
       })
       alert("Contratulations! You reached the final target")

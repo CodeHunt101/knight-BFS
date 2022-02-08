@@ -1,23 +1,8 @@
 class Game < ApplicationRecord
 
-  def self.generate_coordinates
-    # Returns the coordinates of the Chess board
-    x_coordinates = [1, 2, 3, 4, 5, 6, 7, 8]
-    y_coordinates = [8, 7, 6, 5, 4, 3, 2, 1]
-
-    all_positions = []
-
-    x_coordinates.each do |x|
-      y_coordinates.each do |y|
-        all_positions << [x,y]
-      end
-    end
-    all_positions
-  end
-
   def self.generate_random_coordinate
     # Returns a random coordinate form the chess table
-    self.generate_coordinates[rand(0..generate_coordinates.size - 1)]
+    [rand(1..8), rand(1..8)]
   end
 
   def self.generate_next_possible_positions(current_position)
@@ -68,9 +53,7 @@ class Game < ApplicationRecord
         visited << next_possible_position
         edge_to[next_possible_position] = current_position
       end
-      
     end
-    
     
     # The shortest distance is calculated here. 
     # The path will be adding all positions that comes from parents, starting from the target position until the initial position (parent of all).
